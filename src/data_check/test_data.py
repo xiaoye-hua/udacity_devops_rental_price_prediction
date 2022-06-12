@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 import numpy as np
 import scipy.stats
@@ -6,7 +8,7 @@ import scipy.stats
 def test_column_names(data):
 
     expected_colums = [
-        "id",
+        # "id",
         "name",
         "host_id",
         "host_name",
@@ -56,7 +58,7 @@ def test_similar_neigh_distrib(data: pd.DataFrame, ref_data: pd.DataFrame, kl_th
     """
     dist1 = data['neighbourhood_group'].value_counts().sort_index()
     dist2 = ref_data['neighbourhood_group'].value_counts().sort_index()
-
+    logging.info(f"scipy.stats.entropy(dist1, dist2, base=2)")
     assert scipy.stats.entropy(dist1, dist2, base=2) < kl_threshold
 
 
