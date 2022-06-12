@@ -1,4 +1,5 @@
 import json
+import logging
 
 import mlflow
 import tempfile
@@ -28,6 +29,9 @@ def go(config: DictConfig):
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
 
+    root_path = hydra.utils.get_original_cwd()
+    logging.info(f"Root path is {root_path}")
+
     # Steps to execute
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
@@ -52,7 +56,17 @@ def go(config: DictConfig):
             ##################
             # Implement here #
             ##################
-            pass
+            _ = mlflow.run(
+                uri=os.path.join(root_path, 'src/basic_cleaning/'),
+                entry_point="main",
+                parameters={
+                    "input_artifact": "sample.csv:latest",
+                    "output_artifact": "cleaned_data.csv",
+                    "output_type": "cleaned_data",
+                    "output_description": "Data after cleaning"
+                },
+            )
+
 
         if "data_check" in active_steps:
             ##################
