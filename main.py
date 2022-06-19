@@ -137,7 +137,7 @@ def go(config: DictConfig):
                 # uri=os.path.join(root_path, 'components/test_regression_model'),
                 entry_point="main",
                 parameters={
-                    "mlflow_model": 'saved_model:latest',
+                    "mlflow_model": 'saved_model:prod',
                     "test_dataset": 'test_data.csv:latest',
                 },
             )
