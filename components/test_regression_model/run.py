@@ -33,8 +33,11 @@ def go(args):
     X_test = pd.read_csv(test_dataset_path)
     y_test = X_test.pop("price")
 
+    logger.info(f"{X_test.shape}")
+    logger.info(f"{X_test.columns}")
     logger.info("Loading model and performing inference on test set")
     sk_pipe = mlflow.sklearn.load_model(model_local_path)
+    logger.info(f"{sk_pipe}")
     y_pred = sk_pipe.predict(X_test)
 
     logger.info("Scoring")

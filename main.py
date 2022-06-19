@@ -133,8 +133,9 @@ def go(config: DictConfig):
             ##################
 
             _ = mlflow.run(
-                f"{config['main']['components_repository']}/test_regression_model",
-                "main",
+                # f"{config['main']['components_repository']}/test_regression_model",
+                uri=os.path.join(root_path, 'components/test_regression_model'),
+                entry_point="main",
                 parameters={
                     "mlflow_model": 'saved_model:latest',
                     "test_dataset": 'test_data.csv:latest',

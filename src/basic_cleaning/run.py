@@ -36,8 +36,10 @@ def go(args):
     raw_data = pd.read_csv(input_path)
 
     logger.info(f"Cleaning raw_data")
-    cleaned_data = raw_data.drop('id', axis=1)
-
+    cols_to_remove = ['id', 'host_name', 'host_id', 'neighbourhood']
+    for col in cols_to_remove:
+        raw_data = raw_data.drop(col, axis=1)
+    cleaned_data = raw_data
     cleaned_data.to_csv(saved_file, index=False)
 
     logger.info(f"Saving output artifact")

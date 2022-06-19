@@ -5,6 +5,7 @@ This script trains a Random Forest
 import argparse
 import logging
 import os
+import random
 import shutil
 import matplotlib.pyplot as plt
 
@@ -78,6 +79,8 @@ def go(args):
     # Fit the pipeline sk_pipe by calling the .fit method on X_train and y_train
     # YOUR CODE HERE
     ######################################
+    logger.info(f"# X_train: {len(X_train)}")
+    logger.info(f"{X_train.columns}")
     sk_pipe.fit(X_train[processed_features], y_train)
 
     # Compute r2 and MAE
@@ -85,6 +88,12 @@ def go(args):
     r_squared = sk_pipe.score(X_val[processed_features], y_val)
 
     y_pred = sk_pipe.predict(X_val[processed_features])
+
+    # logger.info(f"# New try:")
+    # logger.info(processed_features)
+    # # random.shuffle(processed_features)
+    # logger.info(processed_features)
+    # new_pred  = sk_pipe.predict(X_val[processed_features])
     mae = mean_absolute_error(y_val, y_pred)
 
     logger.info(f"Score: {r_squared}")
@@ -228,6 +237,8 @@ def get_inference_pipeline(rf_config, max_tfidf_features) -> Tuple[Pipeline, lis
     )
 
     processed_features = ordinal_categorical + non_ordinal_categorical + zero_imputed + ["last_review", "name"]
+    logger.info(f"# Processed features: {len(processed_features)}")
+    logger.info(f"{processed_features}")
 
     # Create random forest
     random_Forest = RandomForestRegressor(**rf_config)
