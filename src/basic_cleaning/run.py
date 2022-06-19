@@ -40,6 +40,9 @@ def go(args):
     for col in cols_to_remove:
         raw_data = raw_data.drop(col, axis=1)
     cleaned_data = raw_data
+
+    idx = cleaned_data['longitude'].between(-74.25, -73.50) & cleaned_data['latitude'].between(40.5, 41.2)
+    cleaned_data = cleaned_data[idx].copy()
     cleaned_data.to_csv(saved_file, index=False)
 
     logger.info(f"Saving output artifact")
