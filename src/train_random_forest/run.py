@@ -70,7 +70,7 @@ def go(args):
 
     logger.info("Preparing sklearn pipeline")
 
-    sk_pipe, processed_features = get_inference_pipeline(rf_config, args.max_tfidf_features)
+    sk_pipe = get_inference_pipeline(rf_config, args.max_tfidf_features)
 
     # Then fit it to the X_train, y_train data
     logger.info("Fitting")
@@ -81,13 +81,13 @@ def go(args):
     ######################################
     logger.info(f"# X_train: {len(X_train)}")
     logger.info(f"{X_train.columns}")
-    sk_pipe.fit(X_train[processed_features], y_train)
+    sk_pipe.fit(X_train, y_train)
 
     # Compute r2 and MAE
     logger.info("Scoring")
-    r_squared = sk_pipe.score(X_val[processed_features], y_val)
+    r_squared = sk_pipe.score(X_val, y_val)
 
-    y_pred = sk_pipe.predict(X_val[processed_features])
+    y_pred = sk_pipe.predict(X_val)
 
     # logger.info(f"# New try:")
     # logger.info(processed_features)
@@ -111,11 +111,11 @@ def go(args):
     # YOUR CODE HERE
     ######################################
     model_path = 'saved_model'
-    signiture = infer_signature(model_input=X_val[processed_features], model_output=y_val)
+    signiture = infer_signature(model_input=X_val, model_output=y_val)
     mlflow.sklearn.save_model(
         sk_model=sk_pipe,
         path=model_path,
-        input_example=X_val[processed_features].head(3),
+        input_example=X_val.head(3),
         signature=signiture
     )
     ######################################
@@ -135,7 +135,7 @@ def go(args):
     run.log_artifact(artifact_or_path=artifact)
 
     # Plot feature importance
-    fig_feat_imp = plot_feature_importance(sk_pipe, processed_features)
+    fig_feat_imp = plot_feature_importance(sk_pipe, X_train.columns)
 
     ######################################
     # Here we save r_squared under the "r2" key
@@ -236,9 +236,9 @@ def get_inference_pipeline(rf_config, max_tfidf_features) -> Tuple[Pipeline, lis
         remainder="drop",  # This drops the columns that we do not transform
     )
 
-    processed_features = ordinal_categorical + non_ordinal_categorical + zero_imputed + ["last_review", "name"]
-    logger.info(f"# Processed features: {len(processed_features)}")
-    logger.info(f"{processed_features}")
+    # processed_features = ordinal_categorical + non_ordinal_categorical + zero_imputed + ["last_review", "name"]
+    # logger.info(f"# Processed features: {len(processed_features)}")
+    # logger.info(f"{processed_features}")
 
     # Create random forest
     random_Forest = RandomForestRegressor(**rf_config)
@@ -253,7 +253,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features) -> Tuple[Pipeline, lis
         ('random_forest', random_Forest)
     ])# YOUR CODE HERE
 
-    return sk_pipe, processed_features
+    return sk_pipe #processed_features
 
 
 if __name__ == "__main__":
