@@ -41,6 +41,10 @@ def go(args):
         raw_data = raw_data.drop(col, axis=1)
     cleaned_data = raw_data
 
+    logger.info(f"Set price range [{args.min_price}, {args.max_price}]")
+    idx = cleaned_data['price'].between(args.min_price, args.max_price)
+    cleaned_data = cleaned_data[idx].copy()
+
     idx = cleaned_data['longitude'].between(-74.25, -73.50) & cleaned_data['latitude'].between(40.5, 41.2)
     cleaned_data = cleaned_data[idx].copy()
     cleaned_data.to_csv(saved_file, index=False)
@@ -89,6 +93,18 @@ if __name__ == "__main__":
         required=True
     )
 
+    parser.add_argument(
+        "--min_price",
+        type=float, ## INSERT TYPE HERE: str, float or int,
+        help='', ## INSERT DESCRIPTION HERE,
+        required=True
+    )
+    parser.add_argument(
+        "--max_price",
+        type=float, ## INSERT TYPE HERE: str, float or int,
+        help='', ## INSERT DESCRIPTION HERE,
+        required=True
+    )
     args = parser.parse_args()
 
     go(args)

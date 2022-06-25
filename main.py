@@ -63,7 +63,9 @@ def go(config: DictConfig):
                     "input_artifact": "sample.csv:latest",
                     "output_artifact": "cleaned_data.csv",
                     "output_type": "cleaned_data",
-                    "output_description": "Data after cleaning"
+                    "output_description": "Data after cleaning",
+                    "min_price": config['etl']['min_price'],
+                    "max_price": config['etl']['max_price']
                 },
             )
 
