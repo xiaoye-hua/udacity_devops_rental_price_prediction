@@ -68,41 +68,41 @@ if __name__ == "__main__":
     parser.add_argument(
         "--input_artifact", 
         type=str, #'## INSERT TYPE HERE: str, float or int,
-        help='', # '## INSERT DESCRIPTION HERE,
+        help='path to the raw data artifact', # '## INSERT DESCRIPTION HERE,
         required=True
     )
 
     parser.add_argument(
         "--output_artifact", 
         type= str, ## INSERT TYPE HERE: str, float or int,
-        help='', ## INSERT DESCRIPTION HERE,
+        help='path to cleaned data artifacts', ## INSERT DESCRIPTION HERE,
         required=True
     )
 
     parser.add_argument(
         "--output_type", 
         type=str, ## INSERT TYPE HERE: str, float or int,
-        help='', ## INSERT DESCRIPTION HERE,
+        help='output artifact type', ## INSERT DESCRIPTION HERE,
         required=True
     )
 
     parser.add_argument(
         "--output_description", 
         type=str, ## INSERT TYPE HERE: str, float or int,
-        help='', ## INSERT DESCRIPTION HERE,
+        help='description for the artifact', ## INSERT DESCRIPTION HERE,
         required=True
     )
 
     parser.add_argument(
         "--min_price",
         type=float, ## INSERT TYPE HERE: str, float or int,
-        help='', ## INSERT DESCRIPTION HERE,
+        help='lower boundary for price', ## INSERT DESCRIPTION HERE,
         required=True
     )
     parser.add_argument(
         "--max_price",
         type=float, ## INSERT TYPE HERE: str, float or int,
-        help='', ## INSERT DESCRIPTION HERE,
+        help='upper boundry for price', ## INSERT DESCRIPTION HERE,
         required=True
     )
     args = parser.parse_args()
